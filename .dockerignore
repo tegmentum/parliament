@@ -1,0 +1,24 @@
+# Gradle build artefacts — regenerated inside the container.
+**/.gradle
+**/build
+target/
+
+# IDE state.
+.idea/
+.vscode/
+*.iml
+.classpath
+.project
+.settings/
+
+# Dependencies dir (deegree/openmap/etc — dropped on the fork).
+dependencies/
+
+# Docker itself.
+.dockerignore
+Dockerfile
+
+# VCS.
+.git/
+.gitignore
+.gitattributes
