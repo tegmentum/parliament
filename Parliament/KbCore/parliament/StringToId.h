@@ -11,12 +11,16 @@
 #include "parliament/Types.h"
 #include "parliament/KbConfig.h"
 
-typedef struct rocksdb_t rocksdb_t;
-typedef struct rocksdb_iterator_t rocksdb_iterator_t;
+// Jena-6 fork: include the RocksDB C API here so RocksDBPtr can use
+// decltype(&rocksdb_close) as its deleter type. Without this the deleter
+// was `void(*)(rocksdb_t*)` (C++ linkage) while `rocksdb_close` itself has
+// C linkage — gcc-15 rejects the type mismatch when instantiating unique_ptr.
+#include <memory>
+#include <rocksdb/c.h>
 
 namespace bbn::parliament {
 
-using RocksDBPtr = ::std::unique_ptr<rocksdb_t, void (*)(rocksdb_t*)>;
+using RocksDBPtr = ::std::unique_ptr<rocksdb_t, decltype(&::rocksdb_close)>;
 
 class StrToIdEntryIterator
 {
@@ -62,7 +66,7 @@ public:
 		{ return !(*this == rhs); }
 
 private:
-	using RocksDBIterPtr = ::std::unique_ptr<rocksdb_iterator_t, void (*)(rocksdb_iterator_t*)>;
+	using RocksDBIterPtr = ::std::unique_ptr<rocksdb_iterator_t, decltype(&::rocksdb_iter_destroy)>;
 
 	static auto nullValue() -> value_type
 		{ return ::std::make_pair(value_type::first_type{}, k_nullRsrcId); }

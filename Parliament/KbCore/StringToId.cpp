@@ -21,6 +21,10 @@ using ::boost::format;
 using ::std::string;
 using ::std::string_view;
 using ::std::unique_ptr;
+// Jena-6 fork: hoist RocksDBPtr to file scope so trailing return types
+// on out-of-class method definitions resolve it unqualified. (RocksDBIterPtr
+// is nested inside StrToIdEntryIterator, so it doesn't need this.)
+using pmnt::RocksDBPtr;
 
 static auto g_log(pmnt::log::getSource("StringToId"));
 
