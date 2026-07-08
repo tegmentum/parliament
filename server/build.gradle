@@ -35,6 +35,11 @@ dependencies {
 	implementation project(':jena:SpatialIndex')
 	implementation project(':jena:TemporalIndex')
 
+	// tegmentum WebAssembly filter functions (wf:call). Bundled into the
+	// server fat JAR so wf:call is resolvable in every SPARQL query without
+	// out-of-band plugin management. Registered at boot in ParliamentServletContextListener.
+	implementation 'ai.tegmentum.jena:webfunction:0.1.0-SNAPSHOT'
+
 	implementation libs.commonsCsv
 	implementation libs.commonsIo
 	implementation libs.commonsLang

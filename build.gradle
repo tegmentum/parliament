@@ -24,5 +24,11 @@ subprojects {
 			url = uri('https://repo.osgeo.org/repository/release/')
 		}
 		mavenCentral()
+		// Vendored copy of ai.tegmentum.jena:webfunction (built from
+		// ~/git/jena-webfunction-plugin, refreshed into vendor-m2 by hand).
+		// Once the plugin ships to a public repo this can go away.
+		maven { url = uri("${rootDir}/vendor-m2") }
+		// Local Maven cache — used during host builds; empty in Docker.
+		mavenLocal()
 	}
 }

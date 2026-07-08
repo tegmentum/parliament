@@ -55,3 +55,10 @@ parliament-test.log
 /Parliament/Test/test-kb-data/
 /server/test-kb-data/
 /target/
+
+# Vendored tegmentum wf:call plugin JAR. Not tracked in-tree — refresh by
+# copying from ~/.m2/repository/ai/tegmentum/jena/webfunction/0.1.0-SNAPSHOT/
+# after running `mvn install` in ~/git/jena-webfunction-plugin. The pom.xml
+# and maven-metadata-local.xml stay tracked so the vendor-m2 repo layout
+# is still discoverable.
+/vendor-m2/**/*.jar

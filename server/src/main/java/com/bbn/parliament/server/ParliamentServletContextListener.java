@@ -16,6 +16,11 @@ public class ParliamentServletContextListener implements ServletContextListener 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		LOG.info("contextInitialized");
+		// Register tegmentum WebAssembly filter functions (wf:call and
+		// friends) into Jena's global FunctionRegistry so SPARQL queries
+		// arriving at Parliament's endpoint can call wasm components.
+		ai.tegmentum.jena.webfunctions.WebFunctionInit.register();
+		LOG.info("Registered tegmentum wf:call function registry entries");
 	}
 
 	@Override
