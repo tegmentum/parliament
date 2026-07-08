@@ -25,11 +25,9 @@ import com.bbn.parliament.kb_graph.index.spatial.geosparql.vocabulary.WKT;
 public class WKTLiteral extends GeoSPARQLLiteral {
 	protected static final Logger LOG = LoggerFactory.getLogger(WKTLiteral.class);
 
-	@Override
-	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
-		return super.equals(obj);
-	}
+	// Jena 6: BaseDatatype.equals(Object) and hashCode() are now final, so the
+	// former no-op overrides have been removed. Datatype comparison is
+	// customised via isEqual/getHashCode(LiteralLabel) instead.
 
 	@Override
 	public boolean isEqual(LiteralLabel value1, LiteralLabel value2) {
@@ -122,11 +120,7 @@ public class WKTLiteral extends GeoSPARQLLiteral {
 			: "<%1$s> %2$s".formatted(coordRefUri, text);
 	}
 
-	@Override
-	public int hashCode() {
-		// TODO Auto-generated method stub
-		return super.hashCode();
-	}
+	// Jena 6: hashCode() on BaseDatatype is final; override removed.
 
 	public static class WKTConstructor extends ConstructorFunction<WKTLiteral> {
 		public WKTConstructor() {

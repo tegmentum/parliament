@@ -8,7 +8,6 @@ package com.bbn.parliament.kb_graph.modify;
 
 import org.apache.jena.graph.Node;
 import org.apache.jena.sparql.AlreadyExists;
-import org.apache.jena.sparql.engine.binding.Binding;
 import org.apache.jena.sparql.modify.UpdateEngineWorker;
 import org.apache.jena.sparql.modify.request.UpdateCreate;
 import org.apache.jena.sparql.util.Context;
@@ -19,8 +18,10 @@ import com.bbn.parliament.kb_graph.KbGraphStore;
 
 /** @author sallen */
 public class KbUpdateEngineWorker extends UpdateEngineWorker {
-	public KbUpdateEngineWorker(KbGraphStore graphStore, Binding initialBinding, Context context) {
-		super(graphStore, initialBinding, context);
+	// Jena 6: UpdateEngineWorker no longer takes an initial Binding; input
+	// bindings are supplied at exec time via UpdateExec.
+	public KbUpdateEngineWorker(KbGraphStore graphStore, Context context) {
+		super(graphStore, context);
 	}
 
 	@Override

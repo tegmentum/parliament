@@ -90,12 +90,8 @@ public class createHashUri implements Function {
 		}
 	}
 
-	/// Implementation of the {@code build} method from the Function interface
-	@Deprecated
-	@Override
-	public void build(String uri, ExprList args) {
-		build(uri, args, Context.emptyContext());
-	}
+	// Jena 6: the deprecated 2-arg build(String, ExprList) method is gone from
+	// Function; only the 3-arg build(String, ExprList, Context) remains.
 
 	/// Implementation of the {@code exec} method from the Function interface
 	@Override

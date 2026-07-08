@@ -7,7 +7,6 @@
 package com.bbn.parliament.kb_graph.modify;
 
 import org.apache.jena.sparql.core.DatasetGraph;
-import org.apache.jena.sparql.engine.binding.Binding;
 import org.apache.jena.sparql.modify.UpdateEngine;
 import org.apache.jena.sparql.modify.UpdateEngineBase;
 import org.apache.jena.sparql.modify.UpdateEngineFactory;
@@ -22,6 +21,9 @@ import com.bbn.parliament.kb_graph.KbGraphStore;
 
 /** @author sallen */
 public class KbUpdateEngine extends UpdateEngineBase {
+	// Jena 6: UpdateEngineFactory.create no longer takes a Binding; the input
+	// binding is applied at update-exec time instead. UpdateEngineBase's
+	// constructor and inputBinding field were removed as well.
 	private static UpdateEngineFactory factory = new UpdateEngineFactory() {
 		@Override
 		public boolean accept(DatasetGraph datasetGraph, Context context) {
@@ -29,8 +31,8 @@ public class KbUpdateEngine extends UpdateEngineBase {
 		}
 
 		@Override
-		public UpdateEngine create(DatasetGraph datasetGraph, Binding inputBinding, Context context) {
-			return new KbUpdateEngine((KbGraphStore) datasetGraph, inputBinding, context);
+		public UpdateEngine create(DatasetGraph datasetGraph, Context context) {
+			return new KbUpdateEngine((KbGraphStore) datasetGraph, context);
 		}
 	};
 
@@ -44,8 +46,8 @@ public class KbUpdateEngine extends UpdateEngineBase {
 		UpdateEngineRegistry.get().add(getFactory());
 	}
 
-	public KbUpdateEngine(KbGraphStore datasetGraph, Binding inputBinding, Context context) {
-		super(datasetGraph, inputBinding, context);
+	public KbUpdateEngine(KbGraphStore datasetGraph, Context context) {
+		super(datasetGraph, context);
 		updateSink = null;
 	}
 
@@ -65,8 +67,7 @@ public class KbUpdateEngine extends UpdateEngineBase {
 	@Override
 	public UpdateSink getUpdateSink() {
 		if (updateSink == null) {
-			var worker = new KbUpdateEngineWorker((KbGraphStore) datasetGraph, inputBinding, context);
-			//TODO: I just added the two nulls to match the new constructor in Jena V4. Are they correct?
+			var worker = new KbUpdateEngineWorker((KbGraphStore) datasetGraph, context);
 			updateSink = new UpdateVisitorSink(worker, null, null);
 		}
 		return updateSink;

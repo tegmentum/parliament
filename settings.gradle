@@ -19,5 +19,7 @@ include 'Parliament',
 //	'sesame:LuceneSail',
 //	'sesame:Swrl2Sesame',
 //	'jena:TemporalIndexOld',
-	'jena:SparqlQueryBuilderJ3',
-	'jena:JosekiExtensions'
+	'jena:SparqlQueryBuilderJ3'
+	// JosekiExtensions dropped on Jena-6 fork — legacy Joseki-3.4.4 shim,
+	// no non-test callers, upstream Joseki has been dead since 2011.
+	//'jena:JosekiExtensions'

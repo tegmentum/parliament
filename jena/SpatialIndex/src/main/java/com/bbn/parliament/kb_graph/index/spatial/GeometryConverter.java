@@ -9,7 +9,6 @@ package com.bbn.parliament.kb_graph.index.spatial;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.jena.graph.BlankNodeId;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
 import org.locationtech.jts.geom.Coordinate;
@@ -88,8 +87,9 @@ public class GeometryConverter {
 	public static Node getNodeRepresentation(String representation) {
 		Node result = null;
 		if (representation.startsWith(KbGraph.MAGICAL_BNODE_PREFIX)) {
-			result = NodeFactory.createBlankNode(BlankNodeId.create(representation.substring(
-				KbGraph.MAGICAL_BNODE_PREFIX.length())));
+			// Jena 6: NodeFactory.createBlankNode(String) accepts the label directly.
+			result = NodeFactory.createBlankNode(representation.substring(
+				KbGraph.MAGICAL_BNODE_PREFIX.length()));
 		} else {
 			result = NodeFactory.createURI(representation);
 		}

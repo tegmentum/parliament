@@ -5,7 +5,7 @@ gtVer = "34.4"
 jena3Ver = "3.17.0"
 # Note: If you change jenaVer, you should probably also change it (in 2 places) in
 # OntologyBundle/src/main/java/com/bbn/parliament/ontology_bundle/OntologyBundleExtension.java
-jenaVer = "4.10.0"
+jenaVer = "6.1.0"
 jupiterVer = "6.1.0"
 slf4jVer = "2.0.18"
 

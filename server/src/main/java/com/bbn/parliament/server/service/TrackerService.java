@@ -11,7 +11,9 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 import com.bbn.parliament.server.exception.TrackableException;
 import com.bbn.parliament.server.tracker.TrackableDTO;
 import com.bbn.parliament.server.tracker.Tracker;
-import com.fasterxml.jackson.databind.ObjectMapper;
+// Spring Boot 4 upgraded Jackson to the 3.x line, which moved from the
+// com.fasterxml.jackson namespace to tools.jackson.
+import tools.jackson.databind.ObjectMapper;
 
 @Service
 public class TrackerService {

@@ -20,8 +20,7 @@ dependencies {
 	implementation libs.slf4jApi
 	implementation project(':jena:ParliamentClient')
 	implementation project(':jena:KbGraph')
-	implementation fileTree(dir: "${rootProject.ext.depDir}/deegree", include: "*.jar")
-	implementation fileTree(dir: "${rootProject.ext.depDir}/openmap", include: "*.jar")
+	// deegree + openmap fileTree deps dropped on Jena-6 fork with the RTreeIndex.
 	testImplementation libs.logback
 	testImplementation(testFixtures(project(":jena:KbGraph")))
 }

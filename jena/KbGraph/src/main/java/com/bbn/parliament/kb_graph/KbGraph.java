@@ -11,8 +11,8 @@ import java.io.PrintStream;
 import java.util.Collections;
 import java.util.Map;
 
-import org.apache.jena.graph.BlankNodeId;
-import org.apache.jena.graph.Capabilities;
+// Jena 6: Capabilities interface and BlankNodeId.create(String) both removed;
+// NodeFactory.createBlankNode(String) accepts the raw label directly.
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
 import org.apache.jena.graph.Triple;
@@ -247,33 +247,8 @@ public class KbGraph extends GraphBase implements KbUnionableGraph, AutoCloseabl
 		return buffer.toString();
 	}
 
-	@Override
-	public Capabilities getCapabilities() {
-		return new KbCapabilities();
-	}
-
-	//TODO: Just remove the deprecated methods when Jena does.
-	private static class KbCapabilities implements Capabilities {
-		@Override
-		public boolean addAllowed() {
-			return true;
-		}
-
-		@Override
-		public boolean deleteAllowed() {
-			return true;
-		}
-
-		@Override
-		public boolean handlesLiteralTyping() {
-			return false;
-		}
-
-		@Override
-		public boolean sizeAccurate() {
-			return true;
-		}
-	}
+	// Jena 6: Capabilities was removed from the Graph SPI; the former
+	// getCapabilities() override and its KbCapabilities inner class are gone.
 
 	@Override
 	public void clear() {
@@ -310,9 +285,9 @@ public class KbGraph extends GraphBase implements KbUnionableGraph, AutoCloseabl
 		String representation = kb.rsrcIdToUri(resourceId);
 		Node result = null;
 		if (representation.startsWith(MAGICAL_BNODE_PREFIX)) {
-			// The equivalent concept for the (BlankNodeId) API is AnonId. Historically, that has been in the org.apache.jena.rdf.model package.
-			result = NodeFactory.createBlankNode(BlankNodeId.create(representation
-				.substring(MAGICAL_BNODE_PREFIX.length())));
+			// Jena 6: NodeFactory.createBlankNode(String) takes the label directly.
+			result = NodeFactory.createBlankNode(representation
+				.substring(MAGICAL_BNODE_PREFIX.length()));
 		} else {
 			result = NodeFactory.createURI(representation);
 		}
@@ -349,9 +324,10 @@ public class KbGraph extends GraphBase implements KbUnionableGraph, AutoCloseabl
 		if (!datatype.equals("")) {
 			result = NodeFactory.createLiteral(lexicalForm, lang, NodeFactory.getType(datatype));
 		} else if (!lang.equals("")) {
-			result = NodeFactory.createLiteral(lexicalForm, lang, null);
+			result = NodeFactory.createLiteralLang(lexicalForm, lang);
 		} else {
-			result = NodeFactory.createLiteral(lexicalForm);
+			// Jena 6: createLiteral(String) is gone; use createLiteralString(String).
+			result = NodeFactory.createLiteralString(lexicalForm);
 		}
 		return result;
 	}

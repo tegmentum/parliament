@@ -73,7 +73,8 @@ public class createUnionGraph extends PFuncSimpleAndList {
 		}
 
 		boolean success = kbGraphStore.addUnionGraph(graphName, leftGraphName, rightGraphName);
-		Node result = NodeFactory.createLiteral(success ? "Success" : "Failure");
+		// Jena 6: createLiteral(String) removed; use createLiteralString(String).
+		Node result = NodeFactory.createLiteralString(success ? "Success" : "Failure");
 		LOG.debug("createUnionGraph result for <{}>: {}", graphName.getURI(), result.getLiteralValue());
 		return IterLib.oneResult(binding, Var.alloc("result"), result, execCxt);
 	}

@@ -14,11 +14,13 @@ import org.apache.jena.vocabulary.RDF;
 public class OperandFactoryHelper {
 	protected static List<Node> getSubordinateNodes(Node n, BasicPattern pattern) {
 		List<Node> ret = new ArrayList<>();
+		// Jena 6: Triple.subjectMatches/predicateMatches removed; use .equals.
+		Node rdfType = RDF.type.asNode();
 		for (Triple t : pattern) {
-			if (t.predicateMatches(RDF.type.asNode())) {
+			if (t.getPredicate().equals(rdfType)) {
 				continue;
 			}
-			if (t.subjectMatches(n) && (t.getObject().isVariable() || t.getObject().isURI())) {
+			if (t.getSubject().equals(n) && (t.getObject().isVariable() || t.getObject().isURI())) {
 				ret.add(t.getObject());
 				ret.addAll(getSubordinateNodes(t.getObject(), pattern));
 			}

@@ -7,7 +7,9 @@ import org.apache.jena.graph.Node;
 import org.locationtech.jts.geom.Geometry;
 
 import com.bbn.parliament.kb_graph.index.spatial.jts.JTSIndex;
-import com.bbn.parliament.kb_graph.index.spatial.rtree.RTreeIndex;
+// RTreeIndex removed on the Jena-6 fork: it depended on the archived
+// deegree/openmap jars whose provenance was unreliable. Default falls back
+// to JTSIndex, which covers the same query surface.
 import com.bbn.parliament.kb_graph.index.spatial.sql.postgres.PostgresIndex;
 import com.bbn.parliament.kb_graph.KbGraph;
 import com.bbn.parliament.kb_graph.index.IndexFactory;
@@ -82,10 +84,9 @@ public class SpatialIndexFactory extends IndexFactory<SpatialIndex, Geometry> {
 				id = cleanGraphName(graphName);
 			}
 			index = new PostgresIndex(profile, props, id, indexDir);
-		} else if (Constants.GEOMETRY_INDEX_JTS.equals(indexType)) {
-			index = new JTSIndex(profile, props, indexDir);
 		} else {
-			index = new RTreeIndex(profile, props, indexDir);
+			// Default (was RTreeIndex) and explicit JTS both use JTSIndex now.
+			index = new JTSIndex(profile, props, indexDir);
 		}
 
 		return index;

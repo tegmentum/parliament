@@ -177,25 +177,27 @@ public class SolverUtil {
 
 	private static boolean checkReification(Triple triple, Map<Node, Node[]> reifications) {
 		Node[] reification = null;
-		if (triple.predicateMatches(rdfSubject)){
+		// Jena 6: Triple.predicateMatches/objectMatches were removed; comparing
+		// against concrete RDF vocabulary nodes with .equals gives the same result.
+		if (triple.getPredicate().equals(rdfSubject)){
 			reification = getReification(reifications, triple.getSubject());
 			if (Node.ANY.equals(reification[0])){
 				reification[0] = triple.getObject();
 				return true;
 			}
-		}else if (triple.predicateMatches(rdfPredicate)) {
+		}else if (triple.getPredicate().equals(rdfPredicate)) {
 			reification = getReification(reifications, triple.getSubject());
 			if (Node.ANY.equals(reification[1])){
 				reification[1] = triple.getObject();
 				return true;
 			}
-		}else if (triple.predicateMatches(rdfObject)) {
+		}else if (triple.getPredicate().equals(rdfObject)) {
 			reification = getReification(reifications, triple.getSubject());
 			if (Node.ANY.equals(reification[2])){
 				reification[2] = triple.getObject();
 				return true;
 			}
-		}else if (triple.predicateMatches(rdfType) && triple.objectMatches(rdfStatement)){
+		}else if (triple.getPredicate().equals(rdfType) && triple.getObject().equals(rdfStatement)){
 			return true;
 		}
 		return false;
@@ -277,7 +279,8 @@ public class SolverUtil {
 						if (!t.getSubject().isVariable()) {
 							continue;
 						}
-						if (!containsVar(t, var.asVar().asNode())) {
+						// Jena 6: Var.asNode() removed; Var already extends Node_Variable.
+						if (!containsVar(t, var.asVar())) {
 							continue;
 						}
 						Var resourceVar = Var.alloc(t.getSubject());

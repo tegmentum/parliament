@@ -17,11 +17,13 @@ import com.bbn.parliament.kb_graph.index.Record;
 public abstract class OperandFactoryBase<T> implements OperandFactory<T> {
 	private static Logger log = LoggerFactory.getLogger(OperandFactoryBase.class);
 
+	// Jena 6: Triple.subjectMatches/predicateMatches were removed; callers pass
+	// concrete nodes, so plain .equals gives the same result.
 	protected static BasicPattern getTriplesWithSubject(Node node,
 		BasicPattern pattern) {
 		BasicPattern p = new BasicPattern();
 		for (Triple t : pattern) {
-			if (t.subjectMatches(node)) {
+			if (t.getSubject().equals(node)) {
 				p.add(t);
 			}
 		}
@@ -32,7 +34,7 @@ public abstract class OperandFactoryBase<T> implements OperandFactory<T> {
 		List<String> types = new ArrayList<>();
 		Node type = RDF.type.asNode();
 		for (Triple t : pattern) {
-			if (t.predicateMatches(type)) {
+			if (t.getPredicate().equals(type)) {
 				types.add(t.getObject().getURI());
 			}
 		}
@@ -42,7 +44,7 @@ public abstract class OperandFactoryBase<T> implements OperandFactory<T> {
 	protected static List<Triple> getTriplesWithPredicate(BasicPattern pattern, Node predicate) {
 		List<Triple> types = new ArrayList<>();
 		for (Triple t : pattern) {
-			if (t.predicateMatches(predicate)) {
+			if (t.getPredicate().equals(predicate)) {
 				types.add(t);
 			}
 		}

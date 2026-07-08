@@ -19,8 +19,10 @@ import org.apache.jena.sparql.engine.ExecutionContext;
 import org.apache.jena.sparql.engine.QueryIterator;
 import org.apache.jena.sparql.engine.binding.Binding;
 import org.apache.jena.sparql.engine.iterator.QueryIterRepeatApply;
-import org.apache.jena.sparql.engine.iterator.QueryIterTriplePattern;
+// Jena 6: QueryIterTriplePattern was removed; the javadoc reference below is
+// downgraded to plain text and QC.executeFlat handles the same role internally.
 import org.apache.jena.sparql.engine.main.QC;
+// Jena 6: IterLib is still present but QC.execute(iter,triple,ctx) is renamed executeFlat.
 import org.apache.jena.sparql.util.IterLib;
 
 import com.bbn.parliament.kb_graph.KbGraph;
@@ -28,7 +30,7 @@ import com.bbn.parliament.kb_graph.query.ReifiedTriple;
 import com.bbn.parliament.kb_graph.query.SolverUtil;
 
 /**
- * An iterator that reorders triples before sending them to a {@link QueryIterTriplePattern}.
+ * An iterator that reorders triples before executing them as a triple pattern.
  * <br><br>
  * For each binding in the input {@link QueryIterator}, the input pattern is checked to
  * see if any variables in the triple are bound. If there are no matching variables,
@@ -114,7 +116,7 @@ public class ReorderQueryIterTriplePattern extends QueryIterRepeatApply {
 			if (t instanceof ReifiedTriple reifT) {
 				ret = new QueryIterReifiedTriplePattern(ret, reifT, getExecContext());
 			} else {
-				ret = QC.execute(ret, t, getExecContext());
+				ret = QC.executeFlat(ret, t, getExecContext());
 			}
 		}
 		return ret;

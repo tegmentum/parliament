@@ -26,7 +26,8 @@ import org.apache.jena.query.Dataset;
 import org.apache.jena.query.ReadWrite;
 import org.apache.jena.query.TxnType;
 import org.apache.jena.reasoner.InfGraph;
-import org.apache.jena.riot.other.G;
+// Jena 6: org.apache.jena.riot.other.G moved to org.apache.jena.system.G
+import org.apache.jena.system.G;
 import org.apache.jena.riot.system.PrefixMap;
 import org.apache.jena.riot.system.PrefixMapFactory;
 import org.apache.jena.shared.JenaException;
@@ -279,7 +280,7 @@ public class KbGraphStore extends DatasetGraphTriplesQuads {
 			if (addStatementsToMasterGraph) {
 				Graph masterGraph = getMasterGraph();
 				masterGraph.add(Triple.create(graphName, RDF.Nodes.type, GRAPH_CLASS));
-				masterGraph.add(Triple.create(graphName, GRAPH_DIR_PROPERTY, NodeFactory.createLiteral(graphDir)));
+				masterGraph.add(Triple.create(graphName, GRAPH_DIR_PROPERTY, NodeFactory.createLiteralString(graphDir)));
 			}
 		}
 	}

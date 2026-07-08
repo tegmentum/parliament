@@ -5,8 +5,8 @@ import static org.apache.jena.riot.WebContent.ctResultsJSON;
 import static org.apache.jena.riot.WebContent.ctResultsXML;
 import static org.apache.jena.riot.WebContent.ctTextCSV;
 import static org.apache.jena.riot.WebContent.ctTextTSV;
+// Jena 6: WebContent.ctXMLAlt was removed; ctXML alone is the modern XML content type.
 import static org.apache.jena.riot.WebContent.ctXML;
-import static org.apache.jena.riot.WebContent.ctXMLAlt;
 
 import java.io.OutputStream;
 import java.util.List;
@@ -30,7 +30,7 @@ public enum AcceptableMediaType {
 
 	// Media types for select and ask queries:
 	XML_RESULTS("xml",
-		List.of(ctResultsXML, ctXML, ctXMLAlt),
+		List.of(ctResultsXML, ctXML),
 		(out, resultSet) -> ResultSetFormatter.outputAsXML(out, resultSet),
 		(out, result) -> ResultSetFormatter.outputAsXML(out, result)),
 	JSON_RESULTS("json",

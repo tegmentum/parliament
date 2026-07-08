@@ -59,7 +59,9 @@ public class TripleHandler implements StreamRDF {
 		} else if (node instanceof Node_URI uriNode) {
 			return _kb.uriToRsrcId(uriNode.getURI(), false, true);
 		} else if (node instanceof Node_Literal litNode) {
-			return _kb.uriToRsrcId(litNode.toString(true), true, true);
+			// Jena 6 removed Node_Literal.toString(boolean); the plain toString()
+			// already returns the N3-with-datatype form we want here.
+			return _kb.uriToRsrcId(litNode.toString(), true, true);
 		} else {
 			throw new UnsupportedOperationException("Nodes must be URI, Literal, or blank");
 		}
@@ -83,6 +85,11 @@ public class TripleHandler implements StreamRDF {
 	@Override
 	public void prefix(String prefix, String iri) {
 		// Do nothing
+	}
+
+	@Override
+	public void version(String v) {
+		// StreamRDF gained a version callback in Jena 6; ignore.
 	}
 
 	@Override

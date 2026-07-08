@@ -81,12 +81,7 @@ public abstract class SpatialFunctionBase implements Function {
 
 	protected abstract String[] getArgumentTypes();
 
-	/** {@inheritDoc} */
-	@Override
-	@Deprecated
-	public final void build(String uri, ExprList args) {
-		this.build(uri, args, Context.emptyContext());
-	}
+	// Jena 6: the deprecated 2-arg build(String, ExprList) is gone from Function.
 
 	/** {@inheritDoc} */
 	@Override
